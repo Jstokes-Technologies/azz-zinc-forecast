@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  zinc-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: zinc-forecast-app
+    ports:
+      - "8501:8501"
+    environment:
+      - ORACLE_DSN=${ORACLE_DSN:-localhost:1521/FREEPDB1}
+      - ORACLE_USER=zinc_forecast
+      - ORACLE_PASSWORD=ZincForecast2024!
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    network_mode: host
+    volumes:
+      - ./app:/app
+    command: streamlit run streamlit_app.py --server.port=8501 --server.address=0.0.0.0
